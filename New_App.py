@@ -1,15 +1,11 @@
-import requests
-import time
 import json
-import schedule
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 from binance.client import Client
 from tinydb import TinyDB
-import mplfinance as mpf
-from discord_webhook import DiscordWebhook, DiscordEmbed
+
 from github import Github
 import streamlit as st
 

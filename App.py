@@ -14,6 +14,13 @@ coin_list = ['aave', 'ada', 'algo', 'atom', 'avax', 'axs', 'bat', 'bch', 'btc', 
              'crv', 'doge', 'dot', 'enj', 'etc', 'eth', 'fil', 'gala', 'grt', 'icp', 'link', 'lrc', 'ltc', 'mana', 'matic',
              'mkr', 'omg', 'shib', 'snx', 'sol', 'storj', 'sushi', 'xlm', 'xtz', 'zec']
 
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+st.markdown(hide_menu_style, unsafe_allow_html=True)
+
 chart_list = ['Order Flow', 'Volume Profile']
 
 timeframe_list = ['5min', '1hr']

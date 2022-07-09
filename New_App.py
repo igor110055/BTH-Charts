@@ -4,8 +4,6 @@ from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 from binance.client import Client
 from tinydb import TinyDB
-
-from github import Github
 import streamlit as st
 
 # Initializing Binance

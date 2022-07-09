@@ -44,7 +44,7 @@ elif chart == 'Volume Profile':
 
 
 
-db = TinyDB(symbol.upper() + '_DERIV_Data.json')
+db = TinyDB(f'Data/{symbol.upper()}_DERIV_Data.json')
 
 if chart == 'Volume Profile' and timeframe == 'Daily':
     st.markdown(f"<h3 style='text-align: left; color: white;'>Previous Day's {chart} of {symbol}</h3>",

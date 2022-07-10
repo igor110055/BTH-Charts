@@ -954,7 +954,7 @@ if chart == 'Order Flow' and timeframe == '15min':
         fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
         fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1, annotation_position="top left")
 
-    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 1hr', xaxis_rangeslider_visible=False,
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 15min', xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),
                       paper_bgcolor="#1e1e1e",

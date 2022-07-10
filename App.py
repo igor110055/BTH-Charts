@@ -16,7 +16,7 @@ coin_list = ['aave', 'ada', 'algo', 'atom', 'avax', 'axs', 'bat', 'bch', 'btc', 
 
 chart_list = ['Order Flow', 'Volume Profile']
 
-timeframe_list = ['5min', '1hr']
+timeframe_list = ['5min', '15min', '1hr']
 
 profile_list = ['Daily', 'Weekly']
 

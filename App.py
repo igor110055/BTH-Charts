@@ -449,7 +449,7 @@ if chart == 'Order Flow' and timeframe == '5min':
     # Creating Current Day VP
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
 
-    bars = (binancetime.hour * 12) + (binancetime.minute / 5) - 6
+    bars = (binancetime.hour * 12) + (binancetime.minute / 5) - 4
 
     bars = int(bars)
 

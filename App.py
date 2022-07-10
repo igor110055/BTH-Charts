@@ -83,6 +83,16 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
     daily_vp.set_index('Date', inplace=True)
 
     daily_vp = daily_vp.loc[start:end]
+    
+    today = df.copy()
+
+    today['Date'] = pd.to_datetime(today['Date'])
+
+    day_start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    today.set_index('Date', inplace=True)
+
+    today = today.loc[day_start:]
 
     # Volume Profile 1Day
     bucket_size = 0.002 * max(daily_vp['Close'])
@@ -127,13 +137,15 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
     vah_text = str(vah_text)
     val_text = str(val_text)
     poc_text = str(poc_text)
+    
+    current_chart = pd.concat([daily_vp, today], axis=0)
 
     fig1 = go.Candlestick(
-        x=daily_vp.index,
-        open=daily_vp.Open,
-        high=daily_vp.High,
-        low=daily_vp.Low,
-        close=daily_vp.Close,
+        x=current_chart.index,
+        open=current_chart.Open,
+        high=current_chart.High,
+        low=current_chart.Low,
+        close=current_chart.Close,
         xaxis='x',
         yaxis='y',
         visible=True,
@@ -159,8 +171,8 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
         textposition='auto'
     )
 
-    low = min(daily_vp['Low'])
-    high = max(daily_vp['High'])
+    low = min(current_chart['Low'])
+    high = max(current_chart['High'])
     layout = go.Layout(
         title=go.layout.Title(text="Volume Profile"),
         xaxis=go.layout.XAxis(

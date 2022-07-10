@@ -399,7 +399,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
     fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
     fig.add_trace(go.Scatter(x=[this_week.index[0], this_week.index[0]],
                              y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
-                             line=dict(color='white', width=1, dash='solid'),
+                             line=dict(color='white', width=1, dash='dot'),
                              name='New Week'))
 
     fig.layout.yaxis.showgrid = False

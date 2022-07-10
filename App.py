@@ -9,9 +9,9 @@ import streamlit as st
 # Initializing Binance
 client = Client('', '')
 
-
 coin_list = ['aave', 'ada', 'algo', 'atom', 'avax', 'axs', 'bat', 'bch', 'btc', 'chz', 'comp',
-             'crv', 'doge', 'dot', 'enj', 'etc', 'eth', 'fil', 'gala', 'grt', 'icp', 'link', 'lrc', 'ltc', 'mana', 'matic',
+             'crv', 'doge', 'dot', 'enj', 'etc', 'eth', 'fil', 'gala', 'grt', 'icp', 'link', 'lrc', 'ltc', 'mana',
+             'matic',
              'mkr', 'omg', 'shib', 'snx', 'sol', 'storj', 'sushi', 'xlm', 'xtz', 'zec']
 
 chart_list = ['Order Flow', 'Volume Profile']
@@ -49,10 +49,6 @@ if chart == 'Order Flow':
 elif chart == 'Volume Profile':
     timeframe = st.sidebar.selectbox(options=[timeframe for timeframe in profile_list], label='Timeframe')
 
-
-
-
-
 db = TinyDB(f'Data/{symbol.upper()}_DERIV_Data.json')
 
 if chart == 'Volume Profile' and timeframe == 'Daily':
@@ -83,7 +79,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
     daily_vp.set_index('Date', inplace=True)
 
     daily_vp = daily_vp.loc[start:end]
-    
+
     today = df.copy()
 
     today['Date'] = pd.to_datetime(today['Date'])
@@ -137,7 +133,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
     vah_text = str(vah_text)
     val_text = str(val_text)
     poc_text = str(poc_text)
-    
+
     current_chart = pd.concat([daily_vp, today], axis=0)
 
     fig1 = go.Candlestick(
@@ -203,7 +199,8 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
 
     fig = go.Figure(data=[fig1, fig2], layout=layout)
 
-    fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 5min', xaxis_rangeslider_visible=False,
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 5min',
+                      xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),
                       paper_bgcolor="#1e1e1e",
@@ -217,9 +214,9 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
                   line_dash="dash")
     fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
     fig.add_trace(go.Scatter(x=[today.index[0], today.index[0]],
-                                         y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
-                                         line=dict(color='white', width=1, dash='solid'),
-                                         name='New Day'))
+                             y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
+                             line=dict(color='white', width=1, dash='solid'),
+                             name='New Day'))
 
     fig.layout.yaxis.showgrid = False
     fig.layout.yaxis2.showgrid = False
@@ -227,7 +224,6 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
     fig.layout.xaxis2.showgrid = False
 
     st.plotly_chart(fig, use_container_width=True)
-
 
 if chart == 'Volume Profile' and timeframe == 'Weekly':
     st.markdown(f"<h3 style='text-align: left; color: white;'>Previous Week's {chart} of {symbol}</h3>",
@@ -312,10 +308,9 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
     vah_text = str(vah_text)
     val_text = str(val_text)
     poc_text = str(poc_text)
-    
+
     current_chart = pd.concat([weekly_vp, this_week], axis=0)
-    
-    
+
     agg_dict = {'Open': 'first',
                 'High': 'max',
                 'Low': 'min',
@@ -403,9 +398,9 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
                   line_dash="dash")
     fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
     fig.add_trace(go.Scatter(x=[this_week.index[0], this_week.index[0]],
-                                         y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
-                                         line=dict(color='white', width=1, dash='solid'),
-                                         name='New Week'))
+                             y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
+                             line=dict(color='white', width=1, dash='solid'),
+                             name='New Week'))
 
     fig.layout.yaxis.showgrid = False
     fig.layout.yaxis2.showgrid = False
@@ -413,7 +408,6 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
     fig.layout.xaxis2.showgrid = False
 
     st.plotly_chart(fig, use_container_width=True)
-
 
 if chart == 'Order Flow' and timeframe == '5min':
 
@@ -555,7 +549,8 @@ if chart == 'Order Flow' and timeframe == '5min':
         fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
         fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1, annotation_position="top left")
 
-    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 5min', xaxis_rangeslider_visible=False,
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 5min',
+                      xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),
                       paper_bgcolor="#1e1e1e",
@@ -571,7 +566,6 @@ if chart == 'Order Flow' and timeframe == '5min':
 
     st.plotly_chart(fig, use_container_width=True)
 
-
 if chart == 'Order Flow' and timeframe == '1hr':
 
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
@@ -585,7 +579,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
     h1['Date'] = pd.to_datetime(h1['Date'])
 
     h1.set_index('Date', inplace=True)
-    
+
     m5 = df3.iloc[-start:, :]
 
     m5['Date'] = pd.to_datetime(m5['Date'])
@@ -603,7 +597,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     h1['Volume'] = h1['xAsks'] + h1['xBids']
     h1['Volume_Avg'] = h1['Volume'].rolling(12).mean()
-    
+
     m5['Volume'] = m5['xAsks'] + m5['xBids']
 
     h1['Buy_Volume'] = ' '
@@ -762,7 +756,8 @@ if chart == 'Order Flow' and timeframe == '1hr':
         fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
         fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1, annotation_position="top left")
 
-    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 1hr', xaxis_rangeslider_visible=False,
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 1hr',
+                      xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),
                       paper_bgcolor="#1e1e1e",
@@ -777,22 +772,28 @@ if chart == 'Order Flow' and timeframe == '1hr':
     fig.layout.xaxis.showgrid = False
 
     st.plotly_chart(fig, use_container_width=True)
-    
-    
-    
+
 if chart == 'Order Flow' and timeframe == '15min':
 
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
 
     df3 = pd.DataFrame.from_dict(db)
 
-    start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+    m15_start = int(int(binancetime.isoweekday()) * 864) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
-    m15 = df3.iloc[-start:, :]
+    m5_start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+
+    m15 = df3.iloc[-m15_start:, :]
 
     m15['Date'] = pd.to_datetime(m15['Date'])
 
     m15.set_index('Date', inplace=True)
+
+    m5 = df3.iloc[-m15_start:, :]
+
+    m5['Date'] = pd.to_datetime(m15['Date'])
+
+    m5.set_index('Date', inplace=True)
 
     agg_dict = {'Open': 'first',
                 'High': 'max',
@@ -805,6 +806,8 @@ if chart == 'Order Flow' and timeframe == '15min':
 
     m15['Volume'] = m15['xAsks'] + m15['xBids']
     m15['Volume_Avg'] = m15['Volume'].rolling(4).mean()
+
+    m5['Volume'] = m5['xAsks'] + m5['xBids']
 
     m15['Buy_Volume'] = ' '
     m15['Sell_Volume'] = ' '
@@ -836,9 +839,9 @@ if chart == 'Order Flow' and timeframe == '15min':
 
     m15['Volume'] = m15['xAsks'] + m15['xBids']
 
-    bucket_size = 0.002 * max(m15['Close'])
-    volprofile = m15['Volume'].groupby(
-        m15['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
+    bucket_size = 0.002 * max(m5['Close'])
+    volprofile = m5['Volume'].groupby(
+        m5['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
     VPOC = volprofile.max()
     if binancetime.isoweekday() == 1:
         if binancetime.hour >= 1:
@@ -962,7 +965,8 @@ if chart == 'Order Flow' and timeframe == '15min':
         fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
         fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1, annotation_position="top left")
 
-    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 15min', xaxis_rangeslider_visible=False,
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 15min',
+                      xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),
                       paper_bgcolor="#1e1e1e",

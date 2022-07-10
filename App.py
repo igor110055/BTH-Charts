@@ -461,9 +461,11 @@ if chart == 'Order Flow' and timeframe == '5min':
     m5['CVD'] = m5['Delta'].cumsum()
 
     m5.set_index('Date', inplace=True)
+    
+    now = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    vn = m5
-
+    vn = m5.loc[now:]
+    
     vn['Volume'] = vn['xAsks'] + vn['xBids']
 
     bucket_size = 0.002 * max(vn['Close'])

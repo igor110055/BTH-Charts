@@ -769,3 +769,203 @@ if chart == 'Order Flow' and timeframe == '1hr':
     fig.layout.xaxis.showgrid = False
 
     st.plotly_chart(fig, use_container_width=True)
+    
+    
+    
+if chart == 'Order Flow' and timeframe == '15min':
+
+    binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
+
+    df3 = pd.DataFrame.from_dict(db)
+
+    start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+
+    m15 = df3.iloc[-start:, :]
+
+    m15['Date'] = pd.to_datetime(m15['Date'])
+
+    m15.set_index('Date', inplace=True)
+
+    agg_dict = {'Open': 'first',
+                'High': 'max',
+                'Low': 'min',
+                'Close': 'last',
+                'xBids': 'sum',
+                'xAsks': 'sum', }
+
+    m15 = m15.resample(rule='H').agg(agg_dict)
+
+    m15['Volume'] = m15['xAsks'] + m15['xBids']
+    m15['Volume_Avg'] = m15['Volume'].rolling(12).mean()
+
+    m15['Buy_Volume'] = ' '
+    m15['Sell_Volume'] = ' '
+
+    for x in m15.index:
+        if m15.loc[x, 'xAsks'] > m15.loc[x, 'xBids']:
+            m15.loc[x, 'Buy_Volume'] = abs(m15.loc[x, 'Volume'])
+        if m15.loc[x, 'xBids'] > m15.loc[x, 'xAsks']:
+            m15.loc[x, 'Sell_Volume'] = abs(m15.loc[x, 'Volume'])
+
+    # OFR
+
+    m15['OFR'] = (m15['xAsks'] - m15['xBids']) / (m15['xAsks'] + m15['xBids']) * 100
+
+    m15['OFR_Avg'] = m15['OFR'].rolling(12).mean()
+
+    m15['Bull'] = ' '
+    m15['Bear'] = ' '
+
+    for x in m15.index:
+        if m15.loc[x, 'OFR_Avg'] < 0:
+            m15.loc[x, 'Bear'] = abs(m15.loc[x, 'OFR_Avg'])
+        if m15.loc[x, 'OFR_Avg'] >= 0:
+            m15.loc[x, 'Bull'] = abs(m15.loc[x, 'OFR_Avg'])
+
+    m15['Delta'] = m15['xAsks'] - m15['xBids']
+
+    m15['CVD'] = m15['Delta'].cumsum()
+
+    m15['Volume'] = m15['xAsks'] + m15['xBids']
+
+    bucket_size = 0.002 * max(m15['Close'])
+    volprofile = m15['Volume'].groupby(
+        m15['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
+    VPOC = volprofile.max()
+    if binancetime.isoweekday() == 1:
+        if binancetime.hour >= 1:
+            volume_nodes = volprofile.nlargest(n=3).keys().tolist()
+
+            poc = volprofile.idxmax()
+            volume_nodes.remove(poc)
+
+            vol_node1 = volprofile[volume_nodes[0]]
+            vol_node2 = volprofile[volume_nodes[1]]
+            max_node = volprofile[poc]
+
+            vol_node1 = int(vol_node1)
+            vol_node2 = int(vol_node2)
+            max_node = int(max_node)
+
+            level1 = volume_nodes[0]
+            level2 = volume_nodes[1]
+            level3 = poc
+
+            level1 = round(level1, 3)
+            level2 = round(level2, 3)
+            level3 = round(level3, 3)
+
+            vol_node1 = '{0:,}'.format(vol_node1)
+            vol_node2 = '{0:,}'.format(vol_node2)
+            max_node = '{0:,}'.format(max_node)
+
+            level1 = '{0:,}'.format(level1)
+            level2 = '{0:,}'.format(level2)
+            level3 = '{0:,}'.format(level3)
+
+    elif binancetime.isoweekday() > 1:
+        volume_nodes = volprofile.nlargest(n=3).keys().tolist()
+
+        poc = volprofile.idxmax()
+        volume_nodes.remove(poc)
+
+        vol_node1 = volprofile[volume_nodes[0]]
+        vol_node2 = volprofile[volume_nodes[1]]
+        max_node = volprofile[poc]
+
+        vol_node1 = int(vol_node1)
+        vol_node2 = int(vol_node2)
+        max_node = int(max_node)
+
+        level1 = volume_nodes[0]
+        level2 = volume_nodes[1]
+        level3 = poc
+
+        level1 = round(level1, 3)
+        level2 = round(level2, 3)
+        level3 = round(level3, 3)
+
+        vol_node1 = '{0:,}'.format(vol_node1)
+        vol_node2 = '{0:,}'.format(vol_node2)
+        max_node = '{0:,}'.format(max_node)
+
+        level1 = '{0:,}'.format(level1)
+        level2 = '{0:,}'.format(level2)
+        level3 = '{0:,}'.format(level3)
+
+    # Plot 1hr Chart On a 7Day Rolling Basis
+    fig = make_subplots(rows=4, cols=1, shared_xaxes=True,
+                        vertical_spacing=0.03, subplot_titles=('Price', 'CVD', 'OF', 'Volume'),
+                        row_width=[0.2, 0.2, 0.4, 0.7])
+
+    fig.add_trace(
+        go.Candlestick(
+            x=m15.index,
+            open=m15['Open'],
+            high=m15['High'],
+            low=m15['Low'],
+            close=m15['Close'],
+            name='Price',
+            increasing_fillcolor='#24A06B',
+            decreasing_fillcolor="#CC2E3C",
+            increasing_line_color='#2EC886',
+            decreasing_line_color='#FF3A4C',
+            line=dict(width=1), opacity=1), row=1, col=1)
+
+    fig.add_trace(
+        go.Scatter(x=m15.index, y=m15.CVD, name='Cumulative Delta'), row=2, col=1)
+
+    fig.add_trace(
+        go.Bar(x=m15.index, y=m15.Bull, marker_color='green', marker_line_color='green', opacity=1,
+               name='Bullish OF'), row=3, col=1)
+
+    fig.add_trace(
+        go.Bar(x=m15.index, y=m15.Bear, marker_color='red', marker_line_color='red', opacity=1,
+               name='Bearish OF'), row=3, col=1)
+
+    fig.add_trace(
+        go.Bar(x=m15.index, y=m15.Buy_Volume, marker_color='green', marker_line_color='green', opacity=1,
+               name='Bullish Volume'), row=4, col=1)
+
+    fig.add_trace(
+        go.Bar(x=m15.index, y=m15.Sell_Volume, marker_color='red', marker_line_color='red', opacity=1,
+               name='Bearish Volume'), row=4, col=1)
+
+    fig.add_trace(
+        go.Scatter(x=m15.index, y=m15.Volume_Avg, name='Volume Avg', marker_color="yellow", line_width=1), row=4, col=1)
+
+    if binancetime.isoweekday() == 1:
+        if binancetime.hour >= 1:
+            annotation1 = str(vol_node1) + ' at $' + str(level1)
+            annotation2 = str(vol_node2) + ' at $' + str(level2)
+            annotation3 = str(max_node) + ' at $' + str(level3)
+
+            fig.add_hline(y=volume_nodes[0], annotation_text=annotation1, row=1, annotation_position="top left")
+            fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
+            fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1,
+                          annotation_position="top left")
+
+    elif binancetime.isoweekday() > 1:
+        annotation1 = str(vol_node1) + ' at $' + str(level1)
+        annotation2 = str(vol_node2) + ' at $' + str(level2)
+        annotation3 = str(max_node) + ' at $' + str(level3)
+
+        fig.add_hline(y=volume_nodes[0], annotation_text=annotation1, row=1, annotation_position="top left")
+        fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
+        fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1, annotation_position="top left")
+
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 1hr', xaxis_rangeslider_visible=False,
+                      margin=dict(l=10, r=10, b=10, t=50),
+                      font=dict(size=10, color="#e1e1e1"),
+                      paper_bgcolor="#1e1e1e",
+                      plot_bgcolor="#1e1e1e",
+                      legend=dict(orientation="h"))
+    fig.update_xaxes(
+        gridcolor="#1f292f",
+        showgrid=True, )
+
+    fig.layout.yaxis.showgrid = False
+    fig.layout.yaxis2.showgrid = False
+    fig.layout.xaxis.showgrid = False
+
+    st.plotly_chart(fig, use_container_width=True)

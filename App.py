@@ -449,20 +449,24 @@ if chart == 'Order Flow' and timeframe == '5min':
     # Creating Current Day VP
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
 
-    bars = int(binancetime.hour * 12) + int(binancetime.minute / 5)
+#     bars = int(binancetime.hour * 12) + int(binancetime.minute / 5)
 
-    bars = int(bars)
+#     bars = int(bars)
 
+    now = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    now = now.strftime("%Y-%m-%d %H:%M:%S")  
+  
     m5 = m5.reset_index()
+    
+    m5.set_index('Date', inplace=True)
 
-    for idx, row in m5.iloc[-bars:, :].iterrows():
+    for idx, row in m5.loc[now:].iterrows():
         m5.loc[idx, 'Delta'] = m5.loc[idx, 'xAsks'] - m5.loc[idx, 'xBids']
 
     m5['CVD'] = m5['Delta'].cumsum()
 
-    m5.set_index('Date', inplace=True)
-
-    vn = m5.iloc[-bars:, :]
+    vn = m5.loc[now:]
     
     vn['Volume'] = vn['xAsks'] + vn['xBids']
 
@@ -573,13 +577,19 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     df3 = pd.DataFrame.from_dict(db)
 
-    start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+#     start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
-    h1 = df3.iloc[-start:, :]
+    start = binancetime.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    start = start.strftime("%Y-%m-%d %H:%M:%S")
+
+    h1 = df3
 
     h1['Date'] = pd.to_datetime(h1['Date'])
 
     h1.set_index('Date', inplace=True)
+
+    h1 = h1.loc[start:]
 
     agg_dict = {'Open': 'first',
                 'High': 'max',

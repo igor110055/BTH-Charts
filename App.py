@@ -793,8 +793,6 @@ if chart == 'Order Flow' and timeframe == '15min':
     m15['Volume'] = m15['xAsks'] + m15['xBids']
     m15['Volume_Avg'] = m15['Volume'].rolling(4).mean()
 
-    m5['Volume'] = m5['xAsks'] + m5['xBids']
-
     m15['Buy_Volume'] = ' '
     m15['Sell_Volume'] = ' '
 

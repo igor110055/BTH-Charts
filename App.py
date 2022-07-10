@@ -779,9 +779,9 @@ if chart == 'Order Flow' and timeframe == '15min':
 
     df3 = pd.DataFrame.from_dict(db)
 
-    m15_start = int(int(binancetime.isoweekday()) * 864) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+    m15_start = int(864) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
-    m5_start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+    m5_start = int(288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
     m15 = df3.iloc[-m15_start:, :]
 

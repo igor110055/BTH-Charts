@@ -314,6 +314,16 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
     poc_text = str(poc_text)
     
     current_chart = pd.concat([weekly_vp, this_week], axis=0)
+    
+    
+    agg_dict = {'Open': 'first',
+                'High': 'max',
+                'Low': 'min',
+                'Close': 'last',
+                'xBids': 'sum',
+                'xAsks': 'sum', }
+
+    current_chart = current_chart.resample(rule='H').agg(agg_dict)
 
     fig1 = go.Candlestick(
         x=current_chart.index,

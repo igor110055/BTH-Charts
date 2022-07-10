@@ -210,10 +210,10 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
                       plot_bgcolor="#1e1e1e",
                       legend=dict(orientation="h"))
 
-    fig.add_hline(y=vah, annotation_text='VAH ' + vah_text, annotation_position="top left", line_color='white',
+    fig.add_hline(y=vah, annotation_text='VAH ' + vah_text, annotation_position="top left", line_color='yellow',
                   line_dash="dash")
     fig.add_hline(y=val, annotation_text='VAL ' + val_text, annotation_position="bottom left",
-                  line_color='white',
+                  line_color='yellow',
                   line_dash="dash")
     fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
     fig.add_trace(go.Scatter(x=[today.index[0], today.index[0]],
@@ -312,13 +312,15 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
     vah_text = str(vah_text)
     val_text = str(val_text)
     poc_text = str(poc_text)
+    
+    current_chart = pd.concat([weekly_vp, this_week], axis=0)
 
     fig1 = go.Candlestick(
-        x=weekly_vp.index,
-        open=weekly_vp.Open,
-        high=weekly_vp.High,
-        low=weekly_vp.Low,
-        close=weekly_vp.Close,
+        x=current_chart.index,
+        open=current_chart.Open,
+        high=current_chart.High,
+        low=current_chart.Low,
+        close=current_chart.Close,
         xaxis='x',
         yaxis='y',
         visible=True,
@@ -344,8 +346,8 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
         textposition='auto'
     )
 
-    low = min(weekly_vp['Low'])
-    high = max(weekly_vp['High'])
+    low = min(current_chart['Low'])
+    high = max(current_chart['High'])
     layout = go.Layout(
         title=go.layout.Title(text="Volume Profile"),
         xaxis=go.layout.XAxis(
@@ -384,12 +386,16 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
                       plot_bgcolor="#1e1e1e",
                       legend=dict(orientation="h"))
 
-    fig.add_hline(y=vah, annotation_text='VAH ' + vah_text, annotation_position="top left", line_color='white',
+    fig.add_hline(y=vah, annotation_text='VAH ' + vah_text, annotation_position="top left", line_color='yellow',
                   line_dash="dash")
     fig.add_hline(y=val, annotation_text='VAL ' + val_text, annotation_position="bottom left",
-                  line_color='white',
+                  line_color='yellow',
                   line_dash="dash")
     fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
+    fig.add_trace(go.Scatter(x=[this_week.index[0], this_week.index[0]],
+                                         y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
+                                         line=dict(color='white', width=1, dash='solid'),
+                                         name='New Week'))
 
     fig.layout.yaxis.showgrid = False
     fig.layout.yaxis2.showgrid = False

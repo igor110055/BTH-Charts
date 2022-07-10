@@ -52,7 +52,7 @@ elif chart == 'Volume Profile':
 db = TinyDB(f'Data/{symbol.upper()}_DERIV_Data.json')
 
 if chart == 'Volume Profile' and timeframe == 'Daily':
-    st.markdown(f"<h3 style='text-align: left; color: white;'>Previous Day's {chart} of {symbol}</h3>",
+    st.markdown(f"<h3 style='text-align: left;'>Previous Day's {chart} of {symbol}</h3>",
                 unsafe_allow_html=True)
 
     df = pd.DataFrame.from_dict(db)
@@ -226,7 +226,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
     st.plotly_chart(fig, use_container_width=True)
 
 if chart == 'Volume Profile' and timeframe == 'Weekly':
-    st.markdown(f"<h3 style='text-align: left; color: white;'>Previous Week's {chart} of {symbol}</h3>",
+    st.markdown(f"<h3 style='text-align: left;'>Previous Week's {chart} of {symbol}</h3>",
                 unsafe_allow_html=True)
 
     df = pd.DataFrame.from_dict(db)

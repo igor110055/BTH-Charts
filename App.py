@@ -43,7 +43,7 @@ chart = st.sidebar.selectbox(options=[chart for chart in chart_list], label='Cha
 
 if chart == 'Order Flow':
     timeframe = st.sidebar.selectbox(options=[timeframe for timeframe in timeframe_list], label='Timeframe')
-    st.markdown(f"<h3 style='text-align: left; color: white;'>{timeframe} {chart} of {symbol}</h3>",
+    st.markdown(f"<h3 style='text-align: left;'>{timeframe} {chart} of {symbol}</h3>",
                 unsafe_allow_html=True)
 
 elif chart == 'Volume Profile':

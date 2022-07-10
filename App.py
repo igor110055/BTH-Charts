@@ -84,16 +84,6 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
 
     daily_vp = daily_vp.loc[start:end]
 
-    today = df.copy()
-
-    today['Date'] = pd.to_datetime(today['Date'])
-
-    day_start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
-
-    today.set_index('Date', inplace=True)
-
-    today = today.loc[day_start:]
-
     # Volume Profile 1Day
     bucket_size = 0.002 * max(daily_vp['Close'])
     volprofile = daily_vp['Volume'].groupby(

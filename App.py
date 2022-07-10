@@ -779,17 +779,15 @@ if chart == 'Order Flow' and timeframe == '15min':
 
     df3 = pd.DataFrame.from_dict(db)
 
-    m15_start = int(864) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+    start = int(864) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
-    m5_start = int(288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
-
-    m15 = df3.iloc[-m15_start:, :]
+    m15 = df3.iloc[-start:, :]
 
     m15['Date'] = pd.to_datetime(m15['Date'])
 
     m15.set_index('Date', inplace=True)
 
-    m5 = df3.iloc[-m15_start:, :]
+    m5 = df3.iloc[-start:, :]
 
     m5['Date'] = pd.to_datetime(m5['Date'])
 

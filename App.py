@@ -793,7 +793,7 @@ if chart == 'Order Flow' and timeframe == '15min':
                 'xBids': 'sum',
                 'xAsks': 'sum', }
 
-    m15 = m15.resample(rule='H').agg(agg_dict)
+    m15 = m15.resample(rule='15min').agg(agg_dict)
 
     m15['Volume'] = m15['xAsks'] + m15['xBids']
     m15['Volume_Avg'] = m15['Volume'].rolling(12).mean()

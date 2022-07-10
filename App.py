@@ -796,7 +796,7 @@ if chart == 'Order Flow' and timeframe == '15min':
     m15 = m15.resample(rule='15min').agg(agg_dict)
 
     m15['Volume'] = m15['xAsks'] + m15['xBids']
-    m15['Volume_Avg'] = m15['Volume'].rolling(12).mean()
+    m15['Volume_Avg'] = m15['Volume'].rolling(4).mean()
 
     m15['Buy_Volume'] = ' '
     m15['Sell_Volume'] = ' '
@@ -811,7 +811,7 @@ if chart == 'Order Flow' and timeframe == '15min':
 
     m15['OFR'] = (m15['xAsks'] - m15['xBids']) / (m15['xAsks'] + m15['xBids']) * 100
 
-    m15['OFR_Avg'] = m15['OFR'].rolling(12).mean()
+    m15['OFR_Avg'] = m15['OFR'].rolling(9).mean()
 
     m15['Bull'] = ' '
     m15['Bear'] = ' '

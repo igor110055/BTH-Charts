@@ -461,14 +461,8 @@ if chart == 'Order Flow' and timeframe == '5min':
     m5['CVD'] = m5['Delta'].cumsum()
 
     m5.set_index('Date', inplace=True)
-    
-    now = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    vn = m5
-    
-    vn.set_index('Date', inplace=True)
-      
-    vn = vn.loc[now:]  
+    vn = m5.iloc[-bars:, :]
     
     vn['Volume'] = vn['xAsks'] + vn['xBids']
 

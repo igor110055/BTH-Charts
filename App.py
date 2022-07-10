@@ -265,7 +265,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
 
     this_week = this_week.loc[week_start:]
 
-    # Volume Profile 1Day
+    # Volume Profile 1Week
     bucket_size = 0.002 * max(weekly_vp['Close'])
     volprofile = weekly_vp['Volume'].groupby(
         weekly_vp['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
@@ -409,6 +409,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
 
     st.plotly_chart(fig, use_container_width=True)
 
+    
 if chart == 'Order Flow' and timeframe == '5min':
 
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
@@ -580,12 +581,6 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     h1.set_index('Date', inplace=True)
 
-    m5 = df3.iloc[-start:, :]
-
-    m5['Date'] = pd.to_datetime(m5['Date'])
-
-    m5.set_index('Date', inplace=True)
-
     agg_dict = {'Open': 'first',
                 'High': 'max',
                 'Low': 'min',
@@ -597,8 +592,6 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     h1['Volume'] = h1['xAsks'] + h1['xBids']
     h1['Volume_Avg'] = h1['Volume'].rolling(12).mean()
-
-    m5['Volume'] = m5['xAsks'] + m5['xBids']
 
     h1['Buy_Volume'] = ' '
     h1['Sell_Volume'] = ' '
@@ -630,9 +623,9 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     h1['Volume'] = h1['xAsks'] + h1['xBids']
 
-    bucket_size = 0.002 * max(m5['Close'])
-    volprofile = m5['Volume'].groupby(
-        m5['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
+    bucket_size = 0.002 * max(h1['Close'])
+    volprofile = h1['Volume'].groupby(
+        h1['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
     VPOC = volprofile.max()
     if binancetime.isoweekday() == 1:
         if binancetime.hour >= 1:
@@ -773,6 +766,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     st.plotly_chart(fig, use_container_width=True)
 
+    
 if chart == 'Order Flow' and timeframe == '15min':
 
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
@@ -786,12 +780,6 @@ if chart == 'Order Flow' and timeframe == '15min':
     m15['Date'] = pd.to_datetime(m15['Date'])
 
     m15.set_index('Date', inplace=True)
-
-    m5 = df3.iloc[-start:, :]
-
-    m5['Date'] = pd.to_datetime(m5['Date'])
-
-    m5.set_index('Date', inplace=True)
 
     agg_dict = {'Open': 'first',
                 'High': 'max',
@@ -837,9 +825,9 @@ if chart == 'Order Flow' and timeframe == '15min':
 
     m15['Volume'] = m15['xAsks'] + m15['xBids']
 
-    bucket_size = 0.002 * max(m5['Close'])
-    volprofile = m5['Volume'].groupby(
-        m5['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
+    bucket_size = 0.002 * max(m15['Close'])
+    volprofile = m15['Volume'].groupby(
+        m15['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
     VPOC = volprofile.max()
     if binancetime.isoweekday() == 1:
         if binancetime.hour >= 1:

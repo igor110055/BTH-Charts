@@ -388,7 +388,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
 
     fig = go.Figure(data=[fig1, fig2], layout=layout)
 
-    fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 5min',
+    fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 1hr',
                       xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),

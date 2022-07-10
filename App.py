@@ -449,7 +449,7 @@ if chart == 'Order Flow' and timeframe == '5min':
     # Creating Current Day VP
     binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
 
-    bars = (binancetime.hour * 12) + (binancetime.minute / 5)
+    bars = (binancetime.hour * 12) + (binancetime.minute / 5) - 6
 
     bars = int(bars)
 
@@ -573,7 +573,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
     df3 = pd.DataFrame.from_dict(db)
 
-    start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+    start = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5)) - 12
 
     h1 = df3.iloc[-start:, :]
 

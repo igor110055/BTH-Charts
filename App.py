@@ -603,11 +603,15 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
       bars = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
-      week_day = binancetime.isoweekday() -1
+      if isNewWeek:
+       start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
+       start = start.strftime("%Y-%m-%d %H:%M:%S")
+      else:
+        week_day = binancetime.isoweekday() - 1
 
-      start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=week_day)
+        start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=week_day)
 
-      start = start.strftime("%Y-%m-%d %H:%M:%S")
+        start = start.strftime("%Y-%m-%d %H:%M:%S")
 
       h1 = df3
 

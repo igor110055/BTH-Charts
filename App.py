@@ -414,19 +414,19 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
                       plot_bgcolor="#1e1e1e",
                       legend=dict(orientation="h"))
 
-    fig.update_xaxes(gridcolor="#1f292f", showgrid=True, )
+      fig.update_xaxes(gridcolor="#1f292f", showgrid=True, )
 
-    fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
-                     spikedash='dot')
-    fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
-                     spikedash='dot')
-    fig.update_traces(xaxis='x')
+      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
+                       spikedash='dot')
+      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
+                       spikedash='dot')
+      fig.update_traces(xaxis='x')
 
-    fig.layout.yaxis.showgrid = False
-    fig.layout.yaxis2.showgrid = False
-    fig.layout.yaxis3.showgrid = False
-    fig.layout.yaxis4.showgrid = False
-    fig.layout.xaxis.showgrid = False
+      fig.layout.yaxis.showgrid = False
+      fig.layout.yaxis2.showgrid = False
+      fig.layout.yaxis3.showgrid = False
+      fig.layout.yaxis4.showgrid = False
+      fig.layout.xaxis.showgrid = False
 
  
 

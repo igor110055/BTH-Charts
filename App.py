@@ -474,7 +474,7 @@ if chart == 'Order Flow' and timeframe == '5min':
     volprofile = vn['Volume'].groupby(
         vn['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
     VPOC = volprofile.max()
-    if binancetime.hour >= 1:
+    if len(volprofile) >= 3:
         volume_nodes = volprofile.nlargest(n=3).keys().tolist()
 
         poc = volprofile.idxmax()
@@ -545,7 +545,7 @@ if chart == 'Order Flow' and timeframe == '5min':
     fig.add_trace(
         go.Scatter(x=m5.index, y=m5.Volume_Avg, name='Volume Avg', marker_color="yellow", line_width=1), row=4, col=1)
 
-    if binancetime.hour >= 1:
+    if len(volprofile) >= 3:
         annotation1 = str(vol_node1) + ' at $' + str(level1)
         annotation2 = str(vol_node2) + ' at $' + str(level2)
         annotation3 = str(max_node) + ' at $' + str(level3)
@@ -641,66 +641,35 @@ if chart == 'Order Flow' and timeframe == '1hr':
     volprofile = h1['Volume'].groupby(
         h1['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
     VPOC = volprofile.max()
-    if binancetime.isoweekday() == 1:
-        if binancetime.hour >= 1:
-            volume_nodes = volprofile.nlargest(n=3).keys().tolist()
+    if len(volprofile) >= 3:
+          volume_nodes = volprofile.nlargest(n=3).keys().tolist()
 
-            poc = volprofile.idxmax()
-            volume_nodes.remove(poc)
+          poc = volprofile.idxmax()
+          volume_nodes.remove(poc)
 
-            vol_node1 = volprofile[volume_nodes[0]]
-            vol_node2 = volprofile[volume_nodes[1]]
-            max_node = volprofile[poc]
+          vol_node1 = volprofile[volume_nodes[0]]
+          vol_node2 = volprofile[volume_nodes[1]]
+          max_node = volprofile[poc]
 
-            vol_node1 = int(vol_node1)
-            vol_node2 = int(vol_node2)
-            max_node = int(max_node)
+          vol_node1 = int(vol_node1)
+          vol_node2 = int(vol_node2)
+          max_node = int(max_node)
 
-            level1 = volume_nodes[0]
-            level2 = volume_nodes[1]
-            level3 = poc
+          level1 = volume_nodes[0]
+          level2 = volume_nodes[1]
+          level3 = poc
 
-            level1 = round(level1, 3)
-            level2 = round(level2, 3)
-            level3 = round(level3, 3)
+          level1 = round(level1, 3)
+          level2 = round(level2, 3)
+          level3 = round(level3, 3)
 
-            vol_node1 = '{0:,}'.format(vol_node1)
-            vol_node2 = '{0:,}'.format(vol_node2)
-            max_node = '{0:,}'.format(max_node)
+          vol_node1 = '{0:,}'.format(vol_node1)
+          vol_node2 = '{0:,}'.format(vol_node2)
+          max_node = '{0:,}'.format(max_node)
 
-            level1 = '{0:,}'.format(level1)
-            level2 = '{0:,}'.format(level2)
-            level3 = '{0:,}'.format(level3)
-
-    elif binancetime.isoweekday() > 1:
-        volume_nodes = volprofile.nlargest(n=3).keys().tolist()
-
-        poc = volprofile.idxmax()
-        volume_nodes.remove(poc)
-
-        vol_node1 = volprofile[volume_nodes[0]]
-        vol_node2 = volprofile[volume_nodes[1]]
-        max_node = volprofile[poc]
-
-        vol_node1 = int(vol_node1)
-        vol_node2 = int(vol_node2)
-        max_node = int(max_node)
-
-        level1 = volume_nodes[0]
-        level2 = volume_nodes[1]
-        level3 = poc
-
-        level1 = round(level1, 3)
-        level2 = round(level2, 3)
-        level3 = round(level3, 3)
-
-        vol_node1 = '{0:,}'.format(vol_node1)
-        vol_node2 = '{0:,}'.format(vol_node2)
-        max_node = '{0:,}'.format(max_node)
-
-        level1 = '{0:,}'.format(level1)
-        level2 = '{0:,}'.format(level2)
-        level3 = '{0:,}'.format(level3)
+          level1 = '{0:,}'.format(level1)
+          level2 = '{0:,}'.format(level2)
+          level3 = '{0:,}'.format(level3)
 
     # Plot 1hr Chart On a 7Day Rolling Basis
     fig = make_subplots(rows=4, cols=1, shared_xaxes=True,
@@ -743,18 +712,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
     fig.add_trace(
         go.Scatter(x=h1.index, y=h1.Volume_Avg, name='Volume Avg', marker_color="yellow", line_width=1), row=4, col=1)
 
-    if binancetime.isoweekday() == 1:
-        if binancetime.hour >= 1:
-            annotation1 = str(vol_node1) + ' at $' + str(level1)
-            annotation2 = str(vol_node2) + ' at $' + str(level2)
-            annotation3 = str(max_node) + ' at $' + str(level3)
-
-            fig.add_hline(y=volume_nodes[0], annotation_text=annotation1, row=1, annotation_position="top left")
-            fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
-            fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1,
-                          annotation_position="top left")
-
-    elif binancetime.isoweekday() > 1:
+    if len(volprofile) >= 3:
         annotation1 = str(vol_node1) + ' at $' + str(level1)
         annotation2 = str(vol_node2) + ' at $' + str(level2)
         annotation3 = str(max_node) + ' at $' + str(level3)
@@ -843,38 +801,8 @@ if chart == 'Order Flow' and timeframe == '15min':
     volprofile = m15['Volume'].groupby(
         m15['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
     VPOC = volprofile.max()
-    if binancetime.isoweekday() == 1:
-        if binancetime.hour >= 1:
-            volume_nodes = volprofile.nlargest(n=3).keys().tolist()
 
-            poc = volprofile.idxmax()
-            volume_nodes.remove(poc)
-
-            vol_node1 = volprofile[volume_nodes[0]]
-            vol_node2 = volprofile[volume_nodes[1]]
-            max_node = volprofile[poc]
-
-            vol_node1 = int(vol_node1)
-            vol_node2 = int(vol_node2)
-            max_node = int(max_node)
-
-            level1 = volume_nodes[0]
-            level2 = volume_nodes[1]
-            level3 = poc
-
-            level1 = round(level1, 3)
-            level2 = round(level2, 3)
-            level3 = round(level3, 3)
-
-            vol_node1 = '{0:,}'.format(vol_node1)
-            vol_node2 = '{0:,}'.format(vol_node2)
-            max_node = '{0:,}'.format(max_node)
-
-            level1 = '{0:,}'.format(level1)
-            level2 = '{0:,}'.format(level2)
-            level3 = '{0:,}'.format(level3)
-
-    elif binancetime.isoweekday() > 1:
+    if len(volprofile) >= 3:
         volume_nodes = volprofile.nlargest(n=3).keys().tolist()
 
         poc = volprofile.idxmax()
@@ -945,18 +873,7 @@ if chart == 'Order Flow' and timeframe == '15min':
     fig.add_trace(
         go.Scatter(x=m15.index, y=m15.Volume_Avg, name='Volume Avg', marker_color="yellow", line_width=1), row=4, col=1)
 
-    if binancetime.isoweekday() == 1:
-        if binancetime.hour >= 1:
-            annotation1 = str(vol_node1) + ' at $' + str(level1)
-            annotation2 = str(vol_node2) + ' at $' + str(level2)
-            annotation3 = str(max_node) + ' at $' + str(level3)
-
-            fig.add_hline(y=volume_nodes[0], annotation_text=annotation1, row=1, annotation_position="top left")
-            fig.add_hline(y=volume_nodes[1], annotation_text=annotation2, row=1, annotation_position="top left")
-            fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1,
-                          annotation_position="top left")
-
-    elif binancetime.isoweekday() > 1:
+    if len(volprofile) >= 3:
         annotation1 = str(vol_node1) + ' at $' + str(level1)
         annotation2 = str(vol_node2) + ' at $' + str(level2)
         annotation3 = str(max_node) + ' at $' + str(level3)

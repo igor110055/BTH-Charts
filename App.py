@@ -465,6 +465,8 @@ if chart == 'Order Flow' and timeframe == '5min':
 
       # Slice Dataframe To Only Show Past 24hrs
       m5 = df3.iloc[-288:, :]
+      
+      now = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
 
       if isNewDay:
         now = now - timedelta(minutes=30)

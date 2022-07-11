@@ -237,7 +237,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       st.plotly_chart(fig, use_container_width=True, config=config)
       
     except Exception as e:
-      st.error(e)
+      st.error('Sorry. There was an error.')
 
 if chart == 'Volume Profile' and timeframe == 'Weekly':
   
@@ -411,7 +411,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
                                line=dict(color='white', width=1, dash='dot'),
                                name='New Week'))
 
-      fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 1hr',
+      fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 1hr',
                       xaxis_rangeslider_visible=False,
                       margin=dict(l=10, r=10, b=10, t=50),
                       font=dict(size=10, color="#e1e1e1"),
@@ -420,26 +420,33 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
                       plot_bgcolor="#1e1e1e",
                       legend=dict(orientation="h"))
 
-      fig.update_xaxes(gridcolor="#1f292f", showgrid=True, )
+    fig.add_hline(y=vah, annotation_text='VAH ' + vah_text, annotation_position="top left", line_color='yellow',
+                  line_dash="dash")
+    fig.add_hline(y=val, annotation_text='VAL ' + val_text, annotation_position="bottom left",
+                  line_color='yellow',
+                  line_dash="dash")
+    fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
+    fig.add_trace(go.Scatter(x=[this_week.index[0], this_week.index[0]],
+                             y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
+                             line=dict(color='white', width=1, dash='dot'),
+                             name='New Week'))
 
-      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
-                       spikedash='dot')
-      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
-                       spikedash='dot')
-      fig.update_traces(xaxis='x')
-      
+    fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
+                     spikedash='dot')
+    fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
+                     spikedash='dot')
 
-      fig.layout.yaxis.showgrid = False
-      fig.layout.yaxis2.showgrid = False
-      fig.layout.xaxis.showgrid = False
-      fig.layout.xaxis2.showgrid = False
+    fig.layout.yaxis.showgrid = False
+    fig.layout.yaxis2.showgrid = False
+    fig.layout.xaxis.showgrid = False
+    fig.layout.xaxis2.showgrid = False
 
       config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
     
     except Exception as e:
-      st.error(e)
+      st.error('Sorry. There was an error.')
 
     
 if chart == 'Order Flow' and timeframe == '5min':

@@ -201,15 +201,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       )
 
       fig = go.Figure(data=[fig1, fig2], layout=layout)
-
-      fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 5min',
-                        xaxis_rangeslider_visible=False,
-                        margin=dict(l=10, r=10, b=10, t=50),
-                        font=dict(size=10, color="#e1e1e1"),
-                        paper_bgcolor="#1e1e1e",
-                        plot_bgcolor="#1e1e1e",
-                        legend=dict(orientation="h"))
-
+      
       fig.add_hline(y=vah, annotation_text='VAH ' + vah_text, annotation_position="top left", line_color='yellow',
                     line_dash="dash")
       fig.add_hline(y=val, annotation_text='VAL ' + val_text, annotation_position="bottom left",
@@ -220,12 +212,20 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
                                y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
                                line=dict(color='white', width=1, dash='dot'),
                                name='New Day'))
-      
+
+      fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 5min',
+                      xaxis_rangeslider_visible=False,
+                      margin=dict(l=10, r=10, b=10, t=50),
+                      font=dict(size=10, color="#e1e1e1"),
+                      hovermode='x unified',
+                      paper_bgcolor="#1e1e1e",
+                      plot_bgcolor="#1e1e1e",
+                      legend=dict(orientation="h"))
+
       fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
                        spikedash='dot')
       fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
                        spikedash='dot')
-      fig.update_traces(xaxis='x')
 
       fig.layout.yaxis.showgrid = False
       fig.layout.yaxis2.showgrid = False

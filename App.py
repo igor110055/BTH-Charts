@@ -599,9 +599,11 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
       binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
 
+      isNewWeek = binancetime.isoweekday() == 1
+
       df3 = pd.DataFrame.from_dict(db)
 
-      bars = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
+#       bars = int(int(binancetime.isoweekday()) * 288) + int((binancetime.hour * 12)) + int((binancetime.minute / 5))
 
       if isNewWeek:
        start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)

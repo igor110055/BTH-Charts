@@ -94,7 +94,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       today = today.loc[day_start:]
 
       # Volume Profile 1Day
-      bucket_size = 0.002 * max(daily_vp['Close'])
+      bucket_size = 0.001 * max(daily_vp['Close'])
       volprofile = daily_vp['Volume'].groupby(
           daily_vp['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
       VPOC = volprofile.max()
@@ -189,7 +189,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
               showgrid=False,
               ticks='',
               showticklabels=False,
-              range=[0, 2 * max(volprofile.values)],
+              range=[0, 2.5 * max(volprofile.values)],
               overlaying="x",
           ),
           yaxis2=go.layout.YAxis(
@@ -283,7 +283,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
       this_week = this_week.loc[week_start:]
 
       # Volume Profile 1Week
-      bucket_size = 0.002 * max(weekly_vp['Close'])
+      bucket_size = 0.001 * max(weekly_vp['Close'])
       volprofile = weekly_vp['Volume'].groupby(
           weekly_vp['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
       VPOC = volprofile.max()
@@ -387,7 +387,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
               showgrid=False,
               ticks='',
               showticklabels=False,
-              range=[0, 2 * max(volprofile.values)],
+              range=[0, 2.5 * max(volprofile.values)],
               overlaying="x",
           ),
           yaxis2=go.layout.YAxis(
@@ -499,7 +499,7 @@ if chart == 'Order Flow' and timeframe == '5min':
 
       vn['Volume'] = vn['xAsks'] + vn['xBids']
 
-      bucket_size = 0.002 * max(vn['Close'])
+      bucket_size = 0.001 * max(vn['Close'])
       volprofile = vn['Volume'].groupby(
           vn['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
       VPOC = volprofile.max()
@@ -684,7 +684,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
 
       h1['Volume'] = h1['xAsks'] + h1['xBids']
 
-      bucket_size = 0.002 * max(h1['Close'])
+      bucket_size = 0.001 * max(h1['Close'])
       volprofile = h1['Volume'].groupby(
           h1['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
       VPOC = volprofile.max()
@@ -857,7 +857,7 @@ if chart == 'Order Flow' and timeframe == '15min':
 
       m15['Volume'] = m15['xAsks'] + m15['xBids']
 
-      bucket_size = 0.002 * max(m15['Close'])
+      bucket_size = 0.001 * max(m15['Close'])
       volprofile = m15['Volume'].groupby(
           m15['Close'].apply(lambda x: bucket_size * round(x / bucket_size, 0))).sum()
       VPOC = volprofile.max()

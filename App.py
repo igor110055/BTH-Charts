@@ -237,7 +237,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       st.plotly_chart(fig, use_container_width=True, config=config)
       
     except Exception as e:
-      st.error('Sorry. There was an error.')
+      st.error(e)
 
 if chart == 'Volume Profile' and timeframe == 'Weekly':
   
@@ -439,7 +439,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
       st.plotly_chart(fig, use_container_width=True, config=config)
     
     except Exception as e:
-      st.error('Sorry. There was an error.')
+      st.error(e)
 
     
 if chart == 'Order Flow' and timeframe == '5min':

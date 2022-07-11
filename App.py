@@ -226,7 +226,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       fig.layout.xaxis.showgrid = False
       fig.layout.xaxis2.showgrid = False
 
-      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale']}
+      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
       
@@ -418,7 +418,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
       fig.layout.xaxis.showgrid = False
       fig.layout.xaxis2.showgrid = False
 
-      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale']}
+      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
     
@@ -583,7 +583,7 @@ if chart == 'Order Flow' and timeframe == '5min':
       fig.layout.yaxis2.showgrid = False
       fig.layout.xaxis.showgrid = False
 
-      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale']}
+      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
       
@@ -755,7 +755,7 @@ if chart == 'Order Flow' and timeframe == '1hr':
       fig.layout.yaxis2.showgrid = False
       fig.layout.xaxis.showgrid = False
 
-      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale']}
+      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
       
@@ -921,7 +921,7 @@ if chart == 'Order Flow' and timeframe == '15min':
       fig.layout.yaxis2.showgrid = False
       fig.layout.xaxis.showgrid = False
 
-      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale']}
+      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
       

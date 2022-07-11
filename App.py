@@ -220,6 +220,12 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
                                y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
                                line=dict(color='white', width=1, dash='dot'),
                                name='New Day'))
+      
+      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
+                       spikedash='dot')
+      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
+                       spikedash='dot')
+      fig.update_traces(xaxis='x')
 
       fig.layout.yaxis.showgrid = False
       fig.layout.yaxis2.showgrid = False
@@ -416,19 +422,12 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
 
       fig.update_xaxes(gridcolor="#1f292f", showgrid=True, )
 
-      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
+      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
                        spikedash='dot')
-      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
+      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
                        spikedash='dot')
       fig.update_traces(xaxis='x')
-
-      fig.layout.yaxis.showgrid = False
-      fig.layout.yaxis2.showgrid = False
-      fig.layout.yaxis3.showgrid = False
-      fig.layout.yaxis4.showgrid = False
-      fig.layout.xaxis.showgrid = False
-
- 
+      
 
       fig.layout.yaxis.showgrid = False
       fig.layout.yaxis2.showgrid = False
@@ -774,18 +773,26 @@ if chart == 'Order Flow' and timeframe == '1hr':
           fig.add_hline(y=poc, line_color="red", annotation_text=annotation3, row=1, annotation_position="top left")
 
       fig.update_layout(autosize=False, width=1280, height=720, title_text=symbol.upper() + 'USDT 1hr',
-                        xaxis_rangeslider_visible=False,
-                        margin=dict(l=10, r=10, b=10, t=50),
-                        font=dict(size=10, color="#e1e1e1"),
-                        paper_bgcolor="#1e1e1e",
-                        plot_bgcolor="#1e1e1e",
-                        legend=dict(orientation="h"))
-      fig.update_xaxes(
-          gridcolor="#1f292f",
-          showgrid=True, )
+                      xaxis_rangeslider_visible=False,
+                      margin=dict(l=10, r=10, b=10, t=50),
+                      font=dict(size=10, color="#e1e1e1"),
+                      hovermode='x unified',
+                      paper_bgcolor="#1e1e1e",
+                      plot_bgcolor="#1e1e1e",
+                      legend=dict(orientation="h"))
+
+      fig.update_xaxes(gridcolor="#1f292f", showgrid=True, )
+
+      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
+                       spikedash='dot')
+      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
+                       spikedash='dot')
+      fig.update_traces(xaxis='x')
 
       fig.layout.yaxis.showgrid = False
       fig.layout.yaxis2.showgrid = False
+      fig.layout.yaxis3.showgrid = False
+      fig.layout.yaxis4.showgrid = False
       fig.layout.xaxis.showgrid = False
 
       config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
@@ -950,9 +957,9 @@ if chart == 'Order Flow' and timeframe == '15min':
 
       fig.update_xaxes(gridcolor="#1f292f", showgrid=True, )
 
-      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
+      fig.update_xaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
                        spikedash='dot')
-      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="white", spikesnap='cursor',
+      fig.update_yaxes(showspikes=True, spikethickness=0.1, spikemode='across', spikecolor="grey", spikesnap='cursor',
                        spikedash='dot')
       fig.update_traces(xaxis='x')
 

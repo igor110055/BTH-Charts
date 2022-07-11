@@ -431,6 +431,8 @@ if chart == 'Order Flow' and timeframe == '5min':
     try:
     
       binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
+      
+      isNewDay = binancetime.hour == 0 and binancetime.minute < 20
 
       df3 = pd.DataFrame.from_dict(db)
 
@@ -464,12 +466,11 @@ if chart == 'Order Flow' and timeframe == '5min':
       # Slice Dataframe To Only Show Past 24hrs
       m5 = df3.iloc[-288:, :]
 
-      # Creating Current Day VP
-      binancetime = datetime.utcfromtimestamp(client.get_server_time()['serverTime'] / 1000)
-
-      now = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
-
-      now = now.strftime("%Y-%m-%d %H:%M:%S")  
+      if isNewDay:
+        now = now - timedelta(minutes=30)
+        now = now.strftime("%Y-%m-%d %H:%M:%S")
+      else:
+        now = now.strftime("%Y-%m-%d %H:%M:%S")
 
       m5 = m5.reset_index()
 

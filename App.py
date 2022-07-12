@@ -82,16 +82,18 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       daily_vp.set_index('Date', inplace=True)
 
       daily_vp = daily_vp.loc[start:end]
+      
+      if binancetime.hour < 3:
 
-      today = df.copy()
+        today = df.copy()
 
-      today['Date'] = pd.to_datetime(today['Date'])
+        today['Date'] = pd.to_datetime(today['Date'])
 
-      day_start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
+        day_start = binancetime.replace(hour=0, minute=0, second=0, microsecond=0)
 
-      today.set_index('Date', inplace=True)
+        today.set_index('Date', inplace=True)
 
-      today = today.loc[day_start:]
+        today = today.loc[day_start:]
 
       # Volume Profile 1Day
       bucket_size = 0.001 * max(daily_vp['Close'])
@@ -136,69 +138,134 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       vah_text = str(vah_text)
       val_text = str(val_text)
       poc_text = str(poc_text)
+      
+      if binancetime.hour < 3:
+        current_chart = pd.concat([daily_vp, today], axis=0)
 
-      current_chart = pd.concat([daily_vp, today], axis=0)
+        fig1 = go.Candlestick(
+            x=current_chart.index,
+            open=current_chart.Open,
+            high=current_chart.High,
+            low=current_chart.Low,
+            close=current_chart.Close,
+            xaxis='x',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            increasing_fillcolor='#24A06B',
+            decreasing_fillcolor="#CC2E3C",
+            increasing_line_color='#2EC886',
+            decreasing_line_color='#FF3A4C',
+            line=dict(width=1), opacity=1)
 
-      fig1 = go.Candlestick(
-          x=current_chart.index,
-          open=current_chart.Open,
-          high=current_chart.High,
-          low=current_chart.Low,
-          close=current_chart.Close,
-          xaxis='x',
-          yaxis='y',
-          visible=True,
-          showlegend=False,
-          increasing_fillcolor='#24A06B',
-          decreasing_fillcolor="#CC2E3C",
-          increasing_line_color='#2EC886',
-          decreasing_line_color='#FF3A4C',
-          line=dict(width=1), opacity=1)
+        fig2 = go.Bar(
+            x=volprofile.values,
+            y=volprofile.keys().values,
+            orientation='h',
+            xaxis='x2',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            name='Volume Bars',
+            marker_color='dodgerblue',
+            opacity=0.2,
+            text=volprofile.values,
+            textposition='auto'
+        )
 
-      fig2 = go.Bar(
-          x=volprofile.values,
-          y=volprofile.keys().values,
-          orientation='h',
-          xaxis='x2',
-          yaxis='y',
-          visible=True,
-          showlegend=False,
-          name='Volume Bars',
-          marker_color='dodgerblue',
-          opacity=0.2,
-          text=volprofile.values,
-          textposition='auto'
-      )
+        low = min(current_chart['Low'])
+        high = max(current_chart['High'])
+        layout = go.Layout(
+            title=go.layout.Title(text="Volume Profile"),
+            xaxis=go.layout.XAxis(
+                side="bottom",
+                title="Date",
+                rangeslider=go.layout.xaxis.Rangeslider(visible=False)
+            ),
+            yaxis=go.layout.YAxis(
+                side="right",
+                title='Price',
+                range=[low, high],
+            ),
+            xaxis2=go.layout.XAxis(
+                side="top",
+                showgrid=False,
+                ticks='',
+                showticklabels=False,
+                range=[0, 2.5 * max(volprofile.values)],
+                overlaying="x",
+            ),
+            yaxis2=go.layout.YAxis(
+                side="left",
+                range=[low, high],
+                showticklabels=False,
+                overlaying="y2",
+            ),
+        )
+      
+      else:
+        
+        fig1 = go.Candlestick(
+            x=today.index,
+            open=today.Open,
+            high=today.High,
+            low=today.Low,
+            close=today.Close,
+            xaxis='x',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            increasing_fillcolor='#24A06B',
+            decreasing_fillcolor="#CC2E3C",
+            increasing_line_color='#2EC886',
+            decreasing_line_color='#FF3A4C',
+            line=dict(width=1), opacity=1)
 
-      low = min(current_chart['Low'])
-      high = max(current_chart['High'])
-      layout = go.Layout(
-          title=go.layout.Title(text="Volume Profile"),
-          xaxis=go.layout.XAxis(
-              side="bottom",
-              title="Date",
-              rangeslider=go.layout.xaxis.Rangeslider(visible=False)
-          ),
-          yaxis=go.layout.YAxis(
-              side="right",
-              title='Price',
-              range=[low, high],
-          ),
-          xaxis2=go.layout.XAxis(
-              side="top",
-              showgrid=False,
-              ticks='',
-              showticklabels=False,
-              range=[0, 2.5 * max(volprofile.values)],
-              overlaying="x",
-          ),
-          yaxis2=go.layout.YAxis(
-              side="left",
-              range=[low, high],
-              showticklabels=False,
-              overlaying="y2",
-          ),
-      )
+        fig2 = go.Bar(
+            x=volprofile.values,
+            y=volprofile.keys().values,
+            orientation='h',
+            xaxis='x2',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            name='Volume Bars',
+            marker_color='dodgerblue',
+            opacity=0.2,
+            text=volprofile.values,
+            textposition='auto'
+        )
+
+        low = min(today['Low'])
+        high = max(today['High'])
+        layout = go.Layout(
+            title=go.layout.Title(text="Volume Profile"),
+            xaxis=go.layout.XAxis(
+                side="bottom",
+                title="Date",
+                rangeslider=go.layout.xaxis.Rangeslider(visible=False)
+            ),
+            yaxis=go.layout.YAxis(
+                side="right",
+                title='Price',
+                range=[low, high],
+            ),
+            xaxis2=go.layout.XAxis(
+                side="top",
+                showgrid=False,
+                ticks='',
+                showticklabels=False,
+                range=[0, 2.5 * max(volprofile.values)],
+                overlaying="x",
+            ),
+            yaxis2=go.layout.YAxis(
+                side="left",
+                range=[low, high],
+                showticklabels=False,
+                overlaying="y2",
+            ),
+        )
+        
 
       fig = go.Figure(data=[fig1, fig2], layout=layout)
       

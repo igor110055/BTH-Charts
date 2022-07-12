@@ -276,7 +276,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
                     line_dash="dash")
       fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
       
-      if binancetime.hour < 3:
+      if binancetime.hour > 3:
         fig.add_trace(go.Scatter(x=[today.index[0], today.index[0]],
                                  y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
                                  line=dict(color='white', width=1, dash='dot'),

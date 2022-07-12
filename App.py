@@ -83,7 +83,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
 
       daily_vp = daily_vp.loc[start:end]
       
-      if binancetime.hour > 3:
+      if binancetime.hour > 0:
 
         today = df.copy()
 
@@ -139,7 +139,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       val_text = str(val_text)
       poc_text = str(poc_text)
       
-      if binancetime.hour > 3:
+      if binancetime.hour > 0:
         current_chart = pd.concat([daily_vp, today], axis=0)
 
         fig1 = go.Candlestick(
@@ -276,7 +276,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
                     line_dash="dash")
       fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
       
-      if binancetime.hour > 3:
+      if binancetime.hour > 0:
         fig.add_trace(go.Scatter(x=[today.index[0], today.index[0]],
                                  y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
                                  line=dict(color='white', width=1, dash='dot'),

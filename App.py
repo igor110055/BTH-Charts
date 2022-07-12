@@ -83,7 +83,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
 
       daily_vp = daily_vp.loc[start:end]
       
-      if binancetime.hour < 3:
+      if binancetime.hour > 3:
 
         today = df.copy()
 
@@ -139,7 +139,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       val_text = str(val_text)
       poc_text = str(poc_text)
       
-      if binancetime.hour < 3:
+      if binancetime.hour > 3:
         current_chart = pd.concat([daily_vp, today], axis=0)
 
         fig1 = go.Candlestick(

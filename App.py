@@ -340,16 +340,20 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
       weekly_vp.set_index('Date', inplace=True)
 
       weekly_vp = weekly_vp.loc[prev_week_start:prev_week_end]
+      
+      isNewWeek = binancetime.isoweekday() == 1 and binancetime.hour == 0 and binancetime.minute < 20
+      
+      if not isNewWeek:
 
-      this_week = df.copy()
+        this_week = df.copy()
 
-      this_week['Date'] = pd.to_datetime(this_week['Date'])
+        this_week['Date'] = pd.to_datetime(this_week['Date'])
 
-      week_start = prev_week_start + timedelta(days=7)
+        week_start = prev_week_start + timedelta(days=7)
 
-      this_week.set_index('Date', inplace=True)
+        this_week.set_index('Date', inplace=True)
 
-      this_week = this_week.loc[week_start:]
+        this_week = this_week.loc[week_start:]
 
       # Volume Profile 1Week
       bucket_size = 0.001 * max(weekly_vp['Close'])
@@ -394,78 +398,152 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
       vah_text = str(vah_text)
       val_text = str(val_text)
       poc_text = str(poc_text)
+      
+      if not isNewWeek:
 
-      current_chart = pd.concat([weekly_vp, this_week], axis=0)
+        current_chart = pd.concat([weekly_vp, this_week], axis=0)
 
-      agg_dict = {'Open': 'first',
-                  'High': 'max',
-                  'Low': 'min',
-                  'Close': 'last',
-                  'xBids': 'sum',
-                  'xAsks': 'sum', }
+        agg_dict = {'Open': 'first',
+                    'High': 'max',
+                    'Low': 'min',
+                    'Close': 'last',
+                    'xBids': 'sum',
+                    'xAsks': 'sum', }
 
-      current_chart = current_chart.resample(rule='H').agg(agg_dict)
+        current_chart = current_chart.resample(rule='H').agg(agg_dict)
 
-      fig1 = go.Candlestick(
-          x=current_chart.index,
-          open=current_chart.Open,
-          high=current_chart.High,
-          low=current_chart.Low,
-          close=current_chart.Close,
-          xaxis='x',
-          yaxis='y',
-          visible=True,
-          showlegend=False,
-          increasing_fillcolor='#24A06B',
-          decreasing_fillcolor="#CC2E3C",
-          increasing_line_color='#2EC886',
-          decreasing_line_color='#FF3A4C',
-          line=dict(width=1), opacity=1)
+        fig1 = go.Candlestick(
+            x=current_chart.index,
+            open=current_chart.Open,
+            high=current_chart.High,
+            low=current_chart.Low,
+            close=current_chart.Close,
+            xaxis='x',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            increasing_fillcolor='#24A06B',
+            decreasing_fillcolor="#CC2E3C",
+            increasing_line_color='#2EC886',
+            decreasing_line_color='#FF3A4C',
+            line=dict(width=1), opacity=1)
 
-      fig2 = go.Bar(
-          x=volprofile.values,
-          y=volprofile.keys().values,
-          orientation='h',
-          xaxis='x2',
-          yaxis='y',
-          visible=True,
-          showlegend=False,
-          name='Volume Bars',
-          marker_color='dodgerblue',
-          opacity=0.2,
-          text=volprofile.values,
-          textposition='auto'
-      )
+        fig2 = go.Bar(
+            x=volprofile.values,
+            y=volprofile.keys().values,
+            orientation='h',
+            xaxis='x2',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            name='Volume Bars',
+            marker_color='dodgerblue',
+            opacity=0.2,
+            text=volprofile.values,
+            textposition='auto'
+        )
 
-      low = min(current_chart['Low'])
-      high = max(current_chart['High'])
-      layout = go.Layout(
-          title=go.layout.Title(text="Volume Profile"),
-          xaxis=go.layout.XAxis(
-              side="bottom",
-              title="Date",
-              rangeslider=go.layout.xaxis.Rangeslider(visible=False)
-          ),
-          yaxis=go.layout.YAxis(
-              side="right",
-              title='Price',
-              range=[low, high],
-          ),
-          xaxis2=go.layout.XAxis(
-              side="top",
-              showgrid=False,
-              ticks='',
-              showticklabels=False,
-              range=[0, 2.5 * max(volprofile.values)],
-              overlaying="x",
-          ),
-          yaxis2=go.layout.YAxis(
-              side="left",
-              range=[low, high],
-              showticklabels=False,
-              overlaying="y2",
-          ),
-      )
+        low = min(current_chart['Low'])
+        high = max(current_chart['High'])
+        layout = go.Layout(
+            title=go.layout.Title(text="Volume Profile"),
+            xaxis=go.layout.XAxis(
+                side="bottom",
+                title="Date",
+                rangeslider=go.layout.xaxis.Rangeslider(visible=False)
+            ),
+            yaxis=go.layout.YAxis(
+                side="right",
+                title='Price',
+                range=[low, high],
+            ),
+            xaxis2=go.layout.XAxis(
+                side="top",
+                showgrid=False,
+                ticks='',
+                showticklabels=False,
+                range=[0, 2.5 * max(volprofile.values)],
+                overlaying="x",
+            ),
+            yaxis2=go.layout.YAxis(
+                side="left",
+                range=[low, high],
+                showticklabels=False,
+                overlaying="y2",
+            ),
+        )
+        
+       else:
+
+        agg_dict = {'Open': 'first',
+                    'High': 'max',
+                    'Low': 'min',
+                    'Close': 'last',
+                    'xBids': 'sum',
+                    'xAsks': 'sum', }
+
+        weekly_vp = weekly_vp.resample(rule='H').agg(agg_dict)
+
+        fig1 = go.Candlestick(
+            x=weekly_vp.index,
+            open=weekly_vp.Open,
+            high=weekly_vp.High,
+            low=weekly_vp.Low,
+            close=weekly_vp.Close,
+            xaxis='x',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            increasing_fillcolor='#24A06B',
+            decreasing_fillcolor="#CC2E3C",
+            increasing_line_color='#2EC886',
+            decreasing_line_color='#FF3A4C',
+            line=dict(width=1), opacity=1)
+
+        fig2 = go.Bar(
+            x=volprofile.values,
+            y=volprofile.keys().values,
+            orientation='h',
+            xaxis='x2',
+            yaxis='y',
+            visible=True,
+            showlegend=False,
+            name='Volume Bars',
+            marker_color='dodgerblue',
+            opacity=0.2,
+            text=volprofile.values,
+            textposition='auto'
+        )
+
+        low = min(weekly_vp['Low'])
+        high = max(weekly_vp['High'])
+        layout = go.Layout(
+            title=go.layout.Title(text="Volume Profile"),
+            xaxis=go.layout.XAxis(
+                side="bottom",
+                title="Date",
+                rangeslider=go.layout.xaxis.Rangeslider(visible=False)
+            ),
+            yaxis=go.layout.YAxis(
+                side="right",
+                title='Price',
+                range=[low, high],
+            ),
+            xaxis2=go.layout.XAxis(
+                side="top",
+                showgrid=False,
+                ticks='',
+                showticklabels=False,
+                range=[0, 2.5 * max(volprofile.values)],
+                overlaying="x",
+            ),
+            yaxis2=go.layout.YAxis(
+                side="left",
+                range=[low, high],
+                showticklabels=False,
+                overlaying="y2",
+            ),
+        )
 
       fig = go.Figure(data=[fig1, fig2], layout=layout)
       
@@ -475,10 +553,12 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
                     line_color='yellow',
                     line_dash="dash")
       fig.add_hline(y=poc, line_color="red", annotation_text='POC ' + poc_text, annotation_position="top left")
-      fig.add_trace(go.Scatter(x=[this_week.index[0], this_week.index[0]],
-                               y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
-                               line=dict(color='white', width=1, dash='dot'),
-                               name='New Week'))
+      
+      if not isNewWeek:
+        fig.add_trace(go.Scatter(x=[this_week.index[0], this_week.index[0]],
+                                 y=[min(current_chart['Low']), max(current_chart['High'])], mode='lines',
+                                 line=dict(color='white', width=1, dash='dot'),
+                                 name='New Week'))
 
       fig.update_layout(autosize=False, width=1280, height=720, title_text=str(symbol.upper()) + 'USDT 1hr',
                       xaxis_rangeslider_visible=False,

@@ -301,7 +301,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       fig.layout.xaxis.showgrid = False
       fig.layout.xaxis2.showgrid = False
 
-      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
+      config = {'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawcircle', 'drawrect', 'eraseshape','toggleSpikeLines'], 'displaylogo': False, 'displayModeBar': True, 'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toImage', 'resetScale',  'zoomIn', 'zoomOut']}
 
       st.plotly_chart(fig, use_container_width=True, config=config)
       

@@ -206,11 +206,11 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       else:
         
         fig1 = go.Candlestick(
-            x=today.index,
-            open=today.Open,
-            high=today.High,
-            low=today.Low,
-            close=today.Close,
+            x=daily_vp.index,
+            open=daily_vp.Open,
+            high=daily_vp.High,
+            low=daily_vp.Low,
+            close=daily_vp.Close,
             xaxis='x',
             yaxis='y',
             visible=True,
@@ -236,8 +236,8 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
             textposition='auto'
         )
 
-        low = min(today['Low'])
-        high = max(today['High'])
+        low = min(daily_vp['Low'])
+        high = max(daily_vp['High'])
         layout = go.Layout(
             title=go.layout.Title(text="Volume Profile"),
             xaxis=go.layout.XAxis(
@@ -304,7 +304,7 @@ if chart == 'Volume Profile' and timeframe == 'Daily':
       st.plotly_chart(fig, use_container_width=True, config=config)
       
     except Exception as e:
-      st.error(e)
+      st.error('Sorry. There was an error.')
 
 if chart == 'Volume Profile' and timeframe == 'Weekly':
   

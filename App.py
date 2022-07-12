@@ -473,7 +473,7 @@ if chart == 'Volume Profile' and timeframe == 'Weekly':
             ),
         )
         
-       else:
+      else:
 
         agg_dict = {'Open': 'first',
                     'High': 'max',
